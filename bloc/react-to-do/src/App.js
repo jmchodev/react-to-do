@@ -32,7 +32,7 @@
     //prevent default page reload on form submit
     e.preventDefault();
     //do nothing if the new description has no value
-    if(!this.state.newToDoDescription) { return; }
+    if(!this.state.newTodoDescription) { return; }
     //create new todo object to add to this.state.todos
     const newTodo = {description: this.state.newTodoDescription, isCompleted: false, id};
     //todos is set to a new array with new todo object added at the end
