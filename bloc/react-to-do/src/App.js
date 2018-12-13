@@ -2,6 +2,8 @@
  import './App.css';
  import ToDo from './components/ToDo.js';
 
+ let id = 3; 
+
  class App extends Component {
   constructor(props){
     super(props);
@@ -9,9 +11,9 @@
     is an array of objects, each object has "description" & "isCompleted" as properties*/
     this.state = {
       todos: [
-        { description: 'Walk the cat', isCompleted: true },
-        { description: 'Throw the dishes away', isCompleted: false },
-        { description: 'Buy new dishes', isCompleted: false }      
+        { description: 'Walk the cat', isCompleted: true, id:0 },
+        { description: 'Throw the dishes away', isCompleted: false, id:1 },
+        { description: 'Buy new dishes', isCompleted: false, id:2 }      
       ],
       //store text input values in state
       newTodoDescription: ''
@@ -30,11 +32,12 @@
     //prevent default page reload on form submit
     e.preventDefault();
     //do nothing if the new description has no value
-    if(!this.state.newToDoDescription) { return }
+    if(!this.state.newToDoDescription) { return; }
     //create new todo object to add to this.state.todos
-    const newTodo = {description: this.state.newTodoDescription, isCompleted: false};
+    const newTodo = {description: this.state.newTodoDescription, isCompleted: false, id};
     //todos is set to a new array with new todo object added at the end
     //newTodoDescription is emptied upon creation of a new to-do item
+    id++;
     this.setState({ todos: [...this.state.todos, newTodo], newTodoDescription: ''});
   }
 
@@ -50,10 +53,10 @@ toggleComplete(index){
   this.setState({todos: todos});
 }
 
-deleteToDo(index){
+deleteToDo(id){
   //set a state that passes new array without the selected to-do item
   const delTodos = this.state.todos.filter(function (item){
-    return item.index !== index});
+    return item.id !== id});  
   this.setState({todos: delTodos});
 }
 
@@ -66,7 +69,7 @@ deleteToDo(index){
           /*the map function takes arguments currentValue = todo, and index
           each ToDo attribute is assigned a unique key value using index*/
             <ToDo 
-            key={index} 
+            key={todo.id} 
             //description & isCompleted properties passed down as a prop from App 
             description={todo.description} 
             isCompleted={todo.isCompleted} 
@@ -74,7 +77,7 @@ deleteToDo(index){
             /*to access a specific ToDo item, pass todo's index from map function
             and allow ToDo component to use index to modify appropriate to-do*/
             toggleComplete={ () => this.toggleComplete(index) }
-            deleteToDo = {() => this.deleteToDo(index)} />
+            deleteToDo = {() => this.deleteToDo(todo.id)} />
             )}
         </ul>
         {/*create new form with text input and submit button to create new to-do items
